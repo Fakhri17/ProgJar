@@ -37,6 +37,7 @@ server_socket.close()
 ```
 
 **Output:**
+
 ![alt text](image.png)
 
 **Analisa:**
@@ -68,6 +69,7 @@ client_socket.close()
 ```
 
 **Output:**
+
 ![alt text](image-1.png)
 
 **Analisa:**
