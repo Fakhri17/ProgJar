@@ -13,6 +13,8 @@ while True:
   # Menerima pesan dari client
   data, address = sock.recvfrom(4096)
 
+  print('Menerima pesan dari client:', data.decode())
+
   # palindrome
   message = data.decode()
   if message == message[::-1]:

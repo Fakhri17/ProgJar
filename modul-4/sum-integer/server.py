@@ -12,11 +12,13 @@ while True:
 
   # Menerima pesan dari client
   data, address = sock.recvfrom(4096)
+  print('Menerima pesan dari client:', data.decode())
 
   # Menghitung jumlah bilangan bulat dari pesan yang diterima
   numbers = list(map(int, data.decode().split(',')))
   sum_integer = sum(numbers)
 
+  
   # Mengirim balasan ke client berupa jumlah bilangan bulat
   message = str(sum_integer)
 

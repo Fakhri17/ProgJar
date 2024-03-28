@@ -2,7 +2,7 @@ import socket
 # Inisialisasi socket UDP
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # Bind socket ke alamat dan port tertentu
-server_address = ('localhost', 5000)
+server_address = ('localhost', 12345)
 sock.bind(server_address)
 while True:
  print('Menunggu pesan dari client...')

@@ -1,7 +1,7 @@
 import socket
 # Inisialisasi socket UDP
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('localhost', 5000)
+server_address = ('localhost', 12345)
 while True:
  message = input('Masukkan pesan: ')
  
