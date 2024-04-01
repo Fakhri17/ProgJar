@@ -16,25 +16,26 @@ conn, addr = s.accept()
 
 print("\n Koneksi dengan alamat : {}".format(addr))
 
+# buat fungsi upload {nama file} : ketika client menginputkan command tersebut, maka server akan menerima dan menyimpan file dengan acuan nama file yang diberikan pada parameter pertama
 def upld():
     conn.send(b"1")
-    file_name_size = struct.unpack("h", conn.recv(2))[0]
-    file_name = conn.recv(file_name_size).decode()
+    file_name_length = struct.unpack("h", conn.recv(2))[0]
+    file_name = conn.recv(file_name_length).decode()
     conn.send(b"1")
     file_size = struct.unpack("i", conn.recv(4))[0]
     start_time = time.time()
-    output_file = open(file_name, "wb")
-    bytes_received = 0
-    print("\nMenerima...")
-    while bytes_received < file_size:
+    print("Receiving file...")
+    content = open(file_name, "wb")
+    l = conn.recv(BUFFER_SIZE)
+    while l:
+        content.write(l)
         l = conn.recv(BUFFER_SIZE)
-        output_file.write(l)
-        bytes_received += BUFFER_SIZE
-    output_file.close()
-    print("\nMenerima file: {}".format(file_name))
+    content.close()
     conn.send(struct.pack("f", time.time() - start_time))
     conn.send(struct.pack("i", file_size))
+    print("File received successfully")
     return
+
 
 def list_files():
     print("Listing files...")
@@ -52,6 +53,7 @@ def list_files():
     print("Successfully sent file listing")
     return
 
+# buat fungsi download {nama file} : ketika client menginputkan command tersebut, maka server akan memberikan file dengan acuan nama file yang diberikan pada parameter pertama
 def dwld():
     conn.send(b"1")
     file_name_length = struct.unpack("h", conn.recv(2))[0]
@@ -73,6 +75,7 @@ def dwld():
     content.close()
     conn.recv(BUFFER_SIZE)
     conn.send(struct.pack("f", time.time() - start_time))
+    print("File sent successfully")
     return
 
 def delf():
@@ -95,6 +98,18 @@ def delf():
         print("Delete abandoned by client!")
         return
 
+# buat fungsi size {nama file} : ketika client menginputkan command tersebut, maka server akan memberikan informasi file dalam satuan MB (Mega bytes) dengan acuan nama file yang diberikan pada parameter pertama
+def get_file_size():
+    conn.send(b"1")
+    file_name_length = struct.unpack("h", conn.recv(2))[0]
+    file_name = conn.recv(file_name_length).decode()
+    if os.path.isfile(file_name):
+        conn.send(struct.pack("i", os.path.getsize(file_name)))
+    else:
+        conn.send(struct.pack("i", -1))
+    return
+
+
 def quit():
     conn.send(b"1")
     conn.close()
@@ -113,6 +128,8 @@ while True:
         dwld()
     elif data == "rm":
         delf()
+    elif data == "size":
+        get_file_size()
     elif data == "byebye":
         quit()
     data = None

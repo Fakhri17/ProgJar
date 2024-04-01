@@ -2,6 +2,7 @@ import socket
 import sys
 import os
 import struct
+import time
 
 TCP_IP = "127.0.0.1"
 TCP_PORT = 1456
@@ -15,6 +16,7 @@ def connme():
     except:
         print("Koneksi gagal! Pastikan server telah dijalankan dan port yang digunakan benar")
 
+# buat fungsi upload {nama file} : ketika client menginputkan command tersebut, maka server akan menerima dan menyimpan file dengan acuan nama file yang diberikan pada parameter pertama
 def upld(file_name):
     try:
         s.send(b"upload")
@@ -25,25 +27,23 @@ def upld(file_name):
         s.recv(BUFFER_SIZE)
         s.send(struct.pack("h", sys.getsizeof(file_name)))
         s.send(file_name.encode())
-        s.recv(BUFFER_SIZE)
-        s.send(struct.pack("i", os.path.getsize(file_name)))
-    except:
-        print("Error sending file details")
-    try:
+        file_size = os.path.getsize(file_name)
+        s.send(struct.pack("i", file_size))
+        start_time = time.time()
+        print("Sending file...")
         content = open(file_name, "rb")
         l = content.read(BUFFER_SIZE)
-        print("\nSending...")
         while l:
             s.send(l)
             l = content.read(BUFFER_SIZE)
         content.close()
-        upload_time = struct.unpack("f", s.recv(4))[0]
-        upload_size = struct.unpack("i", s.recv(4))[0]
-        print("\nSent file: {}\nTime elapsed: {}s\nFile size: {}b".format(file_name, upload_time, upload_size))
+        s.recv(BUFFER_SIZE)
+        s.send(struct.pack("f", time.time() - start_time))
+        print("File sent successfully")
+        return
     except:
         print("Error sending file")
         return
-    return
 
 def list_files():
     try:
@@ -71,6 +71,7 @@ def list_files():
         print("Couldn't get final server confirmation")
         return
 
+# buat fungsi download {nama file} : ketika client menginputkan command tersebut, maka server akan memberikan file dengan acuan nama file yang diberikan pada parameter pertama
 def dwld(file_name):
     try:
         s.send(b"download")
@@ -153,6 +154,31 @@ def delf(file_name):
         print("Couldn't delete file")
         return
 
+# buat fungsi size {nama file} : ketika client menginputkan command tersebut, maka server akan memberikan informasi file dalam satuan MB (Mega bytes) dengan acuan nama file yang diberikan pada parameter pertama
+def get_file_size(file_name):
+    try:
+        s.send(b"size")
+    except:
+        print("Couldn't make server request. Make sure a connection has been established.")
+        return
+    try:
+        s.recv(BUFFER_SIZE)
+        s.send(struct.pack("h", sys.getsizeof(file_name)))
+        s.send(file_name.encode())
+        file_size = struct.unpack("i", s.recv(4))[0]
+        if file_size == -1:
+            print("File does not exist. Make sure the name was entered correctly")
+            return
+    except:
+        print("Error checking file")
+    try:
+        s.send(b"1")
+        print("File size: {} MB".format(file_size / 1024 / 1024))
+        return
+    except:
+        print("Couldn't get final server confirmation")
+        return
+
 def quit():
     s.send(b"byebye")
     s.recv(BUFFER_SIZE)
@@ -167,12 +193,12 @@ print("upload <file_path>  : Upload file")
 print("ls                  : List files")
 print("download <file_path>: Download file")
 print("rm <file_path>      : Delete file")
+print("size <file_path>    : Get file size")
 print("byebye              : Keluar program")
 
 
 while True:
     prompt = input("\nEnter a command: ")
-    print(prompt + "\n")
     if prompt[:6].lower() == "connme":
         connme()
     elif prompt[:6].lower() == "upload":
@@ -183,6 +209,8 @@ while True:
         dwld(prompt[9:])
     elif prompt[:2].lower() == "rm":
         delf(prompt[3:])
+    elif prompt[:4].lower() == "size":
+        get_file_size(prompt[5:])
     elif prompt.lower() == "byebye":
         quit()
         break
