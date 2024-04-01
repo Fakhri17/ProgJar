@@ -8,16 +8,16 @@ TCP_PORT = 1456
 BUFFER_SIZE = 1024
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def conn():
+def connme():
     try:
         s.connect((TCP_IP, TCP_PORT))
-        print("Connection successful")
+        print("Koneksi berhasil!")
     except:
-        print("Connection unsuccessful. Make sure the server is online.")
+        print("Koneksi gagal! Pastikan server telah dijalankan dan port yang digunakan benar")
 
 def upld(file_name):
     try:
-        s.send(b"UPLD")
+        s.send(b"upload")
     except:
         print("Couldn't make server request. Make sure a connection has been established.")
         return
@@ -47,7 +47,7 @@ def upld(file_name):
 
 def list_files():
     try:
-        s.send(b"LIST")
+        s.send(b"ls")
     except:
         print("Couldn't make server request. Make sure a connection has been established.")
         return
@@ -73,7 +73,7 @@ def list_files():
 
 def dwld(file_name):
     try:
-        s.send(b"DWLD")
+        s.send(b"download")
     except:
         print("Couldn't make server request. Make sure a connection has been established.")
         return
@@ -108,7 +108,7 @@ def dwld(file_name):
 
 def delf(file_name):
     try:
-        s.send(b"DELF")
+        s.send(b"rm")
         s.recv(BUFFER_SIZE)
     except:
         print("Couldn't connect to server. Make sure a connection has been established.")
@@ -154,27 +154,36 @@ def delf(file_name):
         return
 
 def quit():
-    s.send(b"QUIT")
+    s.send(b"byebye")
     s.recv(BUFFER_SIZE)
     s.close()
     print("Server connection ended")
     return
 
-print("\n\nWelcome to the FTP client.\n\nCall one of the following functions:\nCONN           : Connect to server\nUPLD file_path : Upload file\nLIST           : List files\nDWLD file_path : Download file\nDELF file_path : Delete file\nQUIT           : Exit")
+print("Selamat datang dalam program FTP ( BASIC )\n")
+print("INSTRUKSI :")
+print("connme              : Connect to server ( jalankan ini dulu untuk lanjut perintah lain )")
+print("upload <file_path>  : Upload file")
+print("ls                  : List files")
+print("download <file_path>: Download file")
+print("rm <file_path>      : Delete file")
+print("byebye              : Keluar program")
+
 
 while True:
     prompt = input("\nEnter a command: ")
-    if prompt[:4].upper() == "CONN":
-        conn()
-    elif prompt[:4].upper() == "UPLD":
-        upld(prompt[5:])
-    elif prompt[:4].upper() == "LIST":
+    print(prompt + "\n")
+    if prompt[:6].lower() == "connme":
+        connme()
+    elif prompt[:6].lower() == "upload":
+        upld(prompt[7:])
+    elif prompt.lower() == "ls":
         list_files()
-    elif prompt[:4].upper() == "DWLD":
-        dwld(prompt[5:])
-    elif prompt[:4].upper() == "DELF":
-        delf(prompt[5:])
-    elif prompt[:4].upper() == "QUIT":
+    elif prompt[:8].lower() == "download":
+        dwld(prompt[9:])
+    elif prompt[:2].lower() == "rm":
+        delf(prompt[3:])
+    elif prompt.lower() == "byebye":
         quit()
         break
     else:

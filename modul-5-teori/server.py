@@ -4,7 +4,7 @@ import time
 import os
 import struct
 
-print("\nWelcome to the FTP server.\n\nTo get started, connect a client.")
+print("\nSelamat datang di FTP SERVER.\n\nMenunggu koneksi dari client...\n\n")
 
 TCP_IP = "127.0.0.1"
 TCP_PORT = 1456
@@ -14,7 +14,7 @@ s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
 conn, addr = s.accept()
 
-print("\nConnected to by address: {}".format(addr))
+print("\n Koneksi dengan alamat : {}".format(addr))
 
 def upld():
     conn.send(b"1")
@@ -25,13 +25,13 @@ def upld():
     start_time = time.time()
     output_file = open(file_name, "wb")
     bytes_received = 0
-    print("\nReceiving...")
+    print("\nMenerima...")
     while bytes_received < file_size:
         l = conn.recv(BUFFER_SIZE)
         output_file.write(l)
         bytes_received += BUFFER_SIZE
     output_file.close()
-    print("\nReceived file: {}".format(file_name))
+    print("\nMenerima file: {}".format(file_name))
     conn.send(struct.pack("f", time.time() - start_time))
     conn.send(struct.pack("i", file_size))
     return
@@ -105,14 +105,14 @@ while True:
     print("\n\nWaiting for instruction")
     data = conn.recv(BUFFER_SIZE).decode()
     print("\nReceived instruction: {}".format(data))
-    if data == "UPLD":
+    if data == "upload":
         upld()
-    elif data == "LIST":
+    elif data == "ls":
         list_files()
-    elif data == "DWLD":
+    elif data == "download":
         dwld()
-    elif data == "DELF":
+    elif data == "rm":
         delf()
-    elif data == "QUIT":
+    elif data == "byebye":
         quit()
     data = None
