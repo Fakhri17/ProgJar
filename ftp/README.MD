@@ -6,7 +6,7 @@
 
 Program FTP Socket menggunakan Protokol TCP. Menggunakan bahasa python sebagai bahasa pemrogramannya.
 
-### [Lihat Penjelasan](#penjelasan) | [Lihat Penggunaan](#penggunaan)
+### [Lihat Penjelasan](#Penjelasan) | [Lihat Penggunaan](#Penggunaan)
 
 
 ## Soal
@@ -20,7 +20,7 @@ buat sebuah program file transfer protocol menggunakan socket programming dengan
 - byebye : ketika client menginputkan command tersebut, maka hubungan socket client akan diputus.
 - connme : ketika client menginputkan command tersebut, maka hubungan socket client akan terhubung.
 
-## [Penjelasan](#penjelasan)
+## Penjelasan
 
 **server.py**.
 
@@ -434,4 +434,4 @@ Kode menginisialisasi koneksi ke server menggunakan socket.socket() dan mencoba 
 - get_file_size(file_name): Mengirim perintah "size" ke server untuk meminta ukuran file yang diminta. Menerima respons dari server dan mencetak ukuran file dalam megabyte (MB).
 - quit(): Mengirim perintah "byebye" ke server untuk mengakhiri koneksi, kemudian menutup socket.
 
-## [Penggunaan](#penggunaan)
+## Penggunaan
