@@ -478,7 +478,67 @@ Digunakan untuk melakukan koneksi antara server dan client yang nantinya digunak
 Enter a command: upload <file_path>
 ```
 Contoh file_path adalah ``C:\PraktikumKuliah\SEM-4\ProgJar\ftp\coba.txt`` digunakan untuk mengupload file. Jika sukses maka akan muncul
+
 ```
 Sending file...
 File sent successfully
 ```
+
+**ls**
+``` 
+Enter a command: ls
+```
+Untuk melihat isi dari folder root. Contoh outputnya:
+```
+Enter a command: ls
+        client.py - 7534b
+        coba.txt - 12b
+        README.MD - 16593b
+        server.py - 4419b
+Total directory size: 28558b
+```
+
+**download**
+``` 
+Enter a command: download <file_path>
+```
+Contoh file_path adalah ``C:\PraktikumKuliah\SEM-4\ProgJar\ftp\coba.txt`` digunakan untuk mengupload file. Jika sukses maka akan muncul
+
+```
+Downloading...
+Successfully downloaded C:\PraktikumKuliah\SEM-4\ProgJar\ftp\coba.txt
+Time elapsed: 0.0010020732879638672s
+File size: 0b
+```
+
+**rm**
+``` 
+Enter a command: rm <file_path>
+```
+Contoh file_path adalah ``C:\PraktikumKuliah\SEM-4\ProgJar\ftp\coba.txt`` 
+Digunakan untuk menghapus sebuah file yang ada di dalam folder. Contoh output penggunaannyaa:
+
+```
+Are you sure you want to delete C:\PraktikumKuliah\SEM-4\ProgJar\ftp\coba.txt? (Y/N)
+y
+File successfully deleted
+```
+Maka file akan terhapus dari folder.
+
+**size**
+``` 
+Enter a command: size <file_path>
+```
+
+Contoh file_path adalah ``C:\PraktikumKuliah\SEM-4\ProgJar\modul-3\image-1.png``
+digunakan untuk melihat ukuran sebuah file yang. Outputnya adalah berupa ukuran file dengan satuan (MB). Contoh:
+`File size: 0.05007743835449219 MB`
+
+**byebye**
+``` 
+Enter a command: byebye
+Server connection ended
+```
+
+Digunakan untuk mengkhakhiri / memutus koneksi antara server dan client. 
+
