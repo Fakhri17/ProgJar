@@ -1,6 +1,6 @@
 # Tugas 2 - FTP Socket Programming On python
 
-#### Nama  : Fakhri Alauddin | NIM : 1203220131
+### Nama  : Fakhri Alauddin | NIM : 1203220131
 
 ## Ringkasan
 Program FTP Socket menggunakan Protokol TCP. Menggunakan bahasa python sebagai bahasa pemrogramannya.
