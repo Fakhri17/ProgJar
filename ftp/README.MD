@@ -435,3 +435,51 @@ Kode menginisialisasi koneksi ke server menggunakan socket.socket() dan mencoba 
 - quit(): Mengirim perintah "byebye" ke server untuk mengakhiri koneksi, kemudian menutup socket.
 
 ## Penggunaan
+Untuk menggunakan program ini harus menjalankan 2 file yaitu server.py dan client.py
+
+```
+> python server.py
+
+Selamat datang di FTP SERVER.
+
+Menunggu koneksi dari client...
+```
+```
+> python client.py
+
+Selamat datang dalam program FTP ( BASIC )
+
+INSTRUKSI :
+connme              : Connect to server ( jalankan ini dulu untuk lanjut perintah lain )
+upload <file_path>  : Upload file
+ls                  : List files
+download <file_path>: Download file
+rm <file_path>      : Delete file
+size <file_path>    : Get file size
+byebye              : Keluar program
+
+Enter a command:
+```
+
+### Perintah
+
+**connme**
+
+``` 
+Enter a command: connme
+```
+Digunakan untuk melakukan koneksi antara server dan client yang nantinya digunakan untuk berkomunikasi.
+
+> Penting untuk menjalankan perintah ini terlebih dahulu karena jika tidak maka akan muncul error `Couldn't make server request. Make sure a connection has been established. `
+<br>
+<br>
+
+**upload**
+``` 
+Enter a command: upload <file_path>
+```
+Contoh file_path adalah ``C:\PraktikumKuliah\SEM-4\ProgJar\ftp\coba.txt`` digunakan untuk mengupload file. Jika sukses maka akan muncul
+```
+Sending file...
+File sent successfully
+```
