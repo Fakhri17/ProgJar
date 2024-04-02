@@ -471,8 +471,7 @@ Enter a command: connme
 Digunakan untuk melakukan koneksi antara server dan client yang nantinya digunakan untuk berkomunikasi.
 
 > Penting untuk menjalankan perintah ini terlebih dahulu karena jika tidak maka akan muncul error `Couldn't make server request. Make sure a connection has been established. `
-<br>
-<br>
+
 
 **upload**
 ``` 
