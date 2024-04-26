@@ -41,7 +41,7 @@ while True:
 
             if thread.is_alive():
                 print(f"\nAnda tidak menjawab selama {timeout} detik\n")
-                print("jawab apapun untuk melanjutkan")
+                print("Tekan Enter untuk melanjutkan\n")
                 thread.join()
                 
                 return None
@@ -64,7 +64,7 @@ while True:
         else:
             print("Jawaban salah. Nilai feedback: 0")
 
-        print("\nTunggu 10 detik sebelum mengirim permintaan lagi.\n")
+        print("Tunggu 10 detik untuk menerima warna baru\n")
         time.sleep(10)  # Tunggu 10 detik sebelum mengirim permintaan lagi
     except KeyboardInterrupt:
         print("\nKlien berhenti.")
