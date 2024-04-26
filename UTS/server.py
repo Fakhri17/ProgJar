@@ -3,7 +3,7 @@ import random
 import time
 
 def generate_random_color():
-    colors = ["red", "green", "blue", "yellow", "purple", "orange", "black", "white", "gray"]
+    colors = ["red", "green", "blue", "yellow", "purple", "orange", "black", "white", "brown", "pink"]
     return random.choice(colors)
 
 server_ip = "127.0.0.1"  # Ganti dengan alamat IP server

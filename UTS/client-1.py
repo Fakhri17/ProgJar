@@ -10,6 +10,10 @@ def english_to_indonesian_color(english_color):
         "yellow": "kuning",
         "purple": "ungu",
         "orange": "oranye",
+        "black": "hitam",
+        "white": "putih",
+        "brown": "coklat",
+        "pink": "merah muda",
     }
     return color_mapping.get(english_color.lower(), "tidak dikenali")
 
