@@ -4,7 +4,7 @@ import time
 import os
 import struct
 
-print("\nSelamat datang di FTP SERVER.\n\nMenunggu koneksi dari client...\n\n")
+print("\nWelcome to FTP SERVER.\n\nWaiting for client connection...\n\n")
 
 TCP_IP = "127.0.0.1"
 TCP_PORT = 1456
@@ -14,17 +14,26 @@ s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
 conn, addr = s.accept()
 
-print("\n Koneksi dengan alamat : {}".format(addr))
+print("\n Connection with address : {}".format(addr))
 
 # buat fungsi upload {nama file} : ketika client menginputkan command tersebut, maka server akan menerima dan menyimpan file dengan acuan nama file yang diberikan pada parameter pertama
 def upld():
     conn.send(b"1")
     file_name_length = struct.unpack("h", conn.recv(2))[0]
     file_name = conn.recv(file_name_length).decode()
+
+    # Check if the file already exists
+    original_file_name = file_name
+    counter = 1
+    while os.path.exists(file_name):
+        # If the file exists, append a number to the file name
+        file_name = f"{os.path.splitext(original_file_name)[0]}_{counter}{os.path.splitext(original_file_name)[1]}"
+        counter += 1
+
     conn.send(b"1")
     file_size = struct.unpack("i", conn.recv(4))[0]
     start_time = time.time()
-    print("Receiving file...")
+    print(f"Receiving file: {file_name}")
     content = open(file_name, "wb")
     l = conn.recv(BUFFER_SIZE)
     while l:
@@ -36,7 +45,7 @@ def upld():
     print("File received successfully")
     return
 
-
+# buat fungsi list_files : ketika client menginputkan command tersebut, maka server akan memberikan list file yang ada pada server
 def list_files():
     print("Listing files...")
     listing = os.listdir(os.getcwd())
@@ -78,6 +87,7 @@ def dwld():
     print("File sent successfully")
     return
 
+# buat fungsi delf : ketika client menginputkan command tersebut, maka server akan menghapus file dengan acuan nama file yang diberikan pada parameter pertama
 def delf():
     conn.send(b"1")
     file_name_length = struct.unpack("h", conn.recv(2))[0]
@@ -109,7 +119,7 @@ def get_file_size():
         conn.send(struct.pack("i", -1))
     return
 
-
+# buat fungsi quit : ketika client menginputkan command byebye, maka server akan menutup koneksi dengan client
 def quit():
     conn.send(b"1")
     conn.close()

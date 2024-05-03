@@ -9,14 +9,19 @@ TCP_PORT = 1456
 BUFFER_SIZE = 1024
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+# buat fungsi connme : ketika client menginputkan command tersebut, maka client akan terhubung dengan server
 def connme():
+    # melakukan percobaan koneksi ke server
     try:
+        # jika berhasil, maka akan menampilkan pesan "Koneksi berhasil!"
         s.connect((TCP_IP, TCP_PORT))
-        print("Koneksi berhasil!")
+        print("Connected to server!")
     except:
-        print("Koneksi gagal! Pastikan server telah dijalankan dan port yang digunakan benar")
+        # jika gagal, maka akan menampilkan pesan "Koneksi gagal! Pastikan server telah dijalankan dan port yang digunakan benar"
+        print("Connection failed! Make sure the server is running and the port is correct")
 
-# buat fungsi upload {nama file} : ketika client menginputkan command tersebut, maka server akan menerima dan menyimpan file dengan acuan nama file yang diberikan pada parameter pertama
+
+# buat fungsi upld(parameter) : ketika client menginputkan command tersebut, maka server akan menerima dan menyimpan file dengan acuan nama file yang diberikan pada parameter pertama
 def upld(file_name):
     try:
         s.send(b"upload")
@@ -24,6 +29,7 @@ def upld(file_name):
         print("Couldn't make server request. Make sure a connection has been established.")
         return
     try:
+        # mengirimkan pesan ke server bahwa client akan mengirimkan file
         s.recv(BUFFER_SIZE)
         s.send(struct.pack("h", sys.getsizeof(file_name)))
         s.send(file_name.encode())
@@ -45,6 +51,7 @@ def upld(file_name):
         print("Error sending file")
         return
 
+# buat fungsi list_files : ketika client menginputkan command tersebut, maka server akan memberikan list file yang ada pada server
 def list_files():
     try:
         s.send(b"ls")
@@ -52,6 +59,7 @@ def list_files():
         print("Couldn't make server request. Make sure a connection has been established.")
         return
     try:
+        # program untuk menerima pesan dari server berupa jumlah file yang ada pada server
         number_of_files = struct.unpack("i", s.recv(4))[0]
         for i in range(int(number_of_files)):
             file_name_size = struct.unpack("i", s.recv(4))[0]
@@ -107,6 +115,7 @@ def dwld(file_name):
         return
     return
 
+# buat fungsi delf(parameter) : ketika client menginputkan command tersebut, maka server akan menghapus file dengan acuan nama file yang diberikan pada parameter pertama
 def delf(file_name):
     try:
         s.send(b"rm")
@@ -186,15 +195,15 @@ def quit():
     print("Server connection ended")
     return
 
-print("Selamat datang dalam program FTP ( BASIC )\n")
-print("INSTRUKSI :")
-print("connme              : Connect to server ( jalankan ini dulu untuk lanjut perintah lain )")
+print("Welcome to program ( BASIC )\n")
+print("Command :")
+print("connme              : Connect to server ( run first to connect server)")
 print("upload <file_path>  : Upload file")
 print("ls                  : List files")
 print("download <file_path>: Download file")
 print("rm <file_path>      : Delete file")
 print("size <file_path>    : Get file size")
-print("byebye              : Keluar program")
+print("byebye              : Disconnect from server\n")
 
 
 while True:
